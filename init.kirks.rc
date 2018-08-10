@@ -1,0 +1,245 @@
+on boot
+    # update cpusets now that processors are up
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/foreground/cpus 0-7
+    write /dev/cpuset/foreground/boost/cpus 0-7
+    write /dev/cpuset/background/cpus 0-7
+    write /dev/cpuset/system-background/cpus 0-7
+#cpu gov
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+	
+    chmod 0644  /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0644  /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0644  /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0644  /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+    chmod 0644  /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+    chmod 0644  /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+#interactive gov    
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_load
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/powersave_bias
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/fast_ramp_down
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/align_windows
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/enable_prediction
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration
+
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_load
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/powersave_bias
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/fast_ramp_down
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/align_windows
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/enable_prediction
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration
+#kcal
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_cont
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_hue
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_sat
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_val
+
+    chmod 0644  /sys/devices/platform/kcal_ctrl.0/kcal
+    chmod 0644  /sys/devices/platform/kcal_ctrl.0/kcal_cont
+    chmod 0644  /sys/devices/platform/kcal_ctrl.0/kcal_hue
+    chmod 0644  /sys/devices/platform/kcal_ctrl.0/kcal_sat
+    chmod 0644  /sys/devices/platform/kcal_ctrl.0/kcal_val
+
+on property:sys.boot_completed=1
+
+    # according to Qcom this legacy value improves first launch latencies
+    # stock value is 512k
+    setprop dalvik.vm.heapminfree 2m
+
+    write /dev/cpuset/top-app/cpus 0-3,4-7
+    write /dev/cpuset/foreground/cpus 0-3,6-7
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-3
+
+#Default Profile
+#Little
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    restorecon -R /sys/devices/system/cpu # must restore after interactive
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq "300000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq "1843200"
+    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/*
+    
+    
+ #Big
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactive
+    restorecon -R /sys/devices/system/cpu # must restore after interactive
+    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq "300000"
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq "1747200"
+    
+
+ ## Enable sched guided freq control
+    #write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 1
+    #write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1
+    #write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 1
+    #write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1
+    #write /proc/sys/kernel/sched_freq_inc_notify 50000
+    #write /proc/sys/kernel/sched_freq_dec_notify 50000
+
+#Scheduler tweaks
+	write /proc/sys/kernel/sched_spill_nr_run 1
+	#write /proc/sys/kernel/sched_upmigrate 95
+        #write /proc/sys/kernel/sched_downmigrate 85
+	#write /proc/sys/kernel/sched_grp_upmigrate 100
+        #write /proc/sys/kernel/sched_grp_downmigrate 95
+	write /proc/sys/kernel/sched_enable_thread_grouping 1
+	write /proc/sys/kernel/sched_autogroup_enabled 0
+	#write /proc/sys/kernel/sched_ravg_hist_size 5
+	#write /proc/sys/kernel/sched_boost 0
+
+# HMP Task packing settings for SDM660
+    #write /proc/sys/kernel/sched_small_task 30
+    #write /sys/devices/system/cpu/cpu0/sched_mostly_idle_load 30
+    #write /sys/devices/system/cpu/cpu1/sched_mostly_idle_load 30
+    #write /sys/devices/system/cpu/cpu2/sched_mostly_idle_load 30
+    #write /sys/devices/system/cpu/cpu3/sched_mostly_idle_load 30
+    #write /sys/devices/system/cpu/cpu4/sched_mostly_idle_load 30
+    #write /sys/devices/system/cpu/cpu5/sched_mostly_idle_load 30
+    #write /sys/devices/system/cpu/cpu6/sched_mostly_idle_load 30
+    #write /sys/devices/system/cpu/cpu7/sched_mostly_idle_load 30
+
+
+#write /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run 10
+    #write /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run 10
+    #write /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run 10
+    #write /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run 10
+    #write /sys/devices/system/cpu/cpu4/sched_mostly_idle_nr_run 10
+    #write /sys/devices/system/cpu/cpu5/sched_mostly_idle_nr_run 10
+    #write /sys/devices/system/cpu/cpu6/sched_mostly_idle_nr_run 10
+    #write /sys/devices/system/cpu/cpu7/sched_mostly_idle_nr_run 10
+
+    ## Setup process-reclaim
+    write /sys/module/process_reclaim/parameters/enable_process_reclaim 1
+    #write /sys/module/process_reclaim/parameters/pressure_min 10
+    #write /sys/module/process_reclaim/parameters/per_swap_size 1024
+    #write /sys/module/process_reclaim/parameters/swap_opt_eff 30
+    #write /sys/module/process_reclaim/parameters/pressure_max 70
+
+ ## Clock Scaling
+    #write /sys/class/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load 1
+    #write /sys/class/mmc_host/mmc0/clk_scaling/up_threshold 35
+    #write /sys/class/mmc_host/mmc0/clk_scaling/down_threshold 5
+    #write /sys/class/mmc_host/mmc0/clk_scaling/polling_interval 100
+
+ ## RCU
+    #write /sys/module/rcutree/parameters/rcu_idle_gp_delay 4
+    #write /sys/module/rcutree/parameters/rcu_idle_lazy_gp_delay 6000
+
+## Enable timer migration to little cluster
+    write /proc/sys/kernel/power_aware_timer_migration 1	
+
+#enable power efficient workqueues
+         write /sys/module/workqueue/parameters/power_efficient Y
+#disable input boost and touchboost
+    write /sys/module/cpu_input_boost/parameters/input_boost_freq_lp 0
+    write /sys/module/cpu_input_boost/parameters/input_boost_freq_hp 0
+    write /sys/module/cpu_input_boost/parameters/input_boost_duration 0
+    write /sys/module/msm_performance/parameters/touchboost 0
+#gpu gov, boost   
+ write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
+ write sys/devices/soc/5000000.qcom,kgsl-3d0/devfreq/5000000.qcom,kgsl-3d0/adrenoboost 0
+
+
+## Adreno Idler
+    chmod 0664 /sys/module/adreno_idler/parameters/adreno_idler_active
+	chmod 0664 /sys/module/adreno_idler/parameters/adreno_idler_idlewait
+	chmod 0664 /sys/module/adreno_idler/parameters/adreno_idler_idleworkload
+	chmod 0664 /sys/module/adreno_idler/parameters/adreno_idler_downdifferential
+    write /sys/module/adreno_idler/parameters/adreno_idler_active "Y"
+	write /sys/module/adreno_idler/parameters/adreno_idler_idlewait 25
+	write /sys/module/adreno_idler/parameters/adreno_idler_idleworkload 4000
+	write /sys/module/adreno_idler/parameters/adreno_idler_downdifferential 20
+
+# Enable MSM Thermal Driver
+	chmod 0644 /sys/module/msm_thermal/parameters/enabled
+	write /sys/module/msm_thermal/parameters/enabled Y
+
+# Enable thermal hotplug
+	chmod 0644 write /sys/module/msm_thermal/core_control/enabled
+	write /sys/module/msm_thermal/core_control/enabled 1
+
+
+#Set swappiness
+        write /proc/sys/vm/swappiness 15
+
+
+# Set I/O Scheduler
+        setprop sys.io.scheduler fiops
+        write /sys/block/dm-0/queue/read_ahead_kb 256
+        write /sys/block/dm-0/queue/iostats 0
+	write /sys/block/dm-0/queue/scheduler fiops
+
+    	write /sys/block/dm-1/queue/read_ahead_kb 256
+	write /sys/block/dm-1/queue/iostats 0
+	write /sys/block/dm-1/queue/scheduler fiops
+
+	write /sys/block/mmcblk0/queue/read_ahead_kb 256
+	write /sys/block/mmcblk0/queue/iostats 0
+	write /sys/block/mmcblk0/queue/scheduler fiops
+	write /sys/block/mmcblk0/queue/rq_affinity 0
+        write /sys/block/mmcblk0/bdi/min_ratio 5
+
+	write /sys/block/mmcblk1/queue/read_ahead_kb 256
+	write /sys/block/mmcblk1/queue/iostats 0
+	write /sys/block/mmcblk1/queue/scheduler fiops
+	write /sys/block/mmcblk1/queue/rq_affinity 0
+        write /sys/block/mmcblk1/bdi/min_ratio 5
+
+## Entropy Tweaks
+    write /proc/sys/kernel/random/read_wakeup_threshold 64
+    write /proc/sys/kernel/random/write_wakeup_threshold 896
+
+#other tweaks
+	write /sys/module/battery_current_limit/parameters/low_battery_value 1
+	setprop ro.sys.fw.dex2oat_thread_count 8
+	setprop dalvik.vm.dex2oat-threads 8
+        setprop dalvik.vm.image-dex2oat-threads 8
+	setprop persist.sys.perf.debug false
+	setprop vendor.audio.offload.buffer.size.kb 256
+
+
+# Turn off debugging for certain modules
+	write /sys/module/kernel/parameters/initcall_debug 0
+	write /sys/module/lowmemorykiller/parameters/debug_level 0
+	write /sys/module/alarm/parameters/debug_mask 0
+	write /sys/module/alarm_dev/parameters/debug_mask 0
+	write /sys/module/binder/parameters/debug_mask 0
+	write /sys/module/xt_qtaguid/parameters/debug_mask 0
+
+
+exec u:r:init:s0 -- /init.kirks.sh
+    exec u:r:su:s0 root root -- /init.kirks.sh
+    exec u:r:supersu:s0 root root -- /init.kirks.sh
