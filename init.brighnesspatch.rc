@@ -1,0 +1,3 @@
+on boot
+on property:sys.boot_completed=1
+exec u:r:init:s0 -- /init.kirks.sh
